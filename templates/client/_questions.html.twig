@@ -1,0 +1,12 @@
+{# Questions folded one under the other; `open` unfolds them (the search results). #}
+<div class="faq-questions">
+    {% for question in questions %}
+    <details class="faq-question" id="q-{{ question.slug }}" {{ open|default(false) ? 'open' }}>
+        <summary>{{ question.title }}</summary>
+        <div class="faq-answer">
+            {{ question.content|wysiwyg|raw }}
+            <p class="faq-answer-foot"><a href="{{ path('faq_question', {slug: question.slug}) }}" title="{{ '@faq.question.link'|trans }}"><i class="fa-solid fa-link" aria-hidden="true"></i> {{ '@faq.question.link'|trans }}</a></p>
+        </div>
+    </details>
+    {% endfor %}
+</div>

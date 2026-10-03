@@ -1,0 +1,43 @@
+index:
+  title: "Frequently asked questions"
+  eyebrow: "I am often asked"
+  lead: "The questions colleagues ask most, and their answers. One missing? Ask it at the bottom of the page."
+  search: "Search a question"
+  go: "Search"
+  results: "{count, plural, =0 {No answer for “{term}”} one {# answer for “{term}”} other {# answers for “{term}”}}"
+  sections: "Sections"
+  other: "Other questions"
+  empty: "No question published yet."
+question:
+  link: "Link to this answer"
+  siblings: "In the same section"
+ask:
+  title: "A question missing?"
+  lead: "Ask it here: it will be read, and the answer added to this page."
+  form:
+    question: "Your question"
+    details: "Details (optional)"
+    email: "Your e-mail (optional)"
+    email_help: "To tell you once the answer is online. Never shown."
+    submit: "Send the question"
+  error:
+    too_fast: "A little fast! Read your question again and send it."
+  flash:
+    received: "Thank you! Your question arrived."
+notify:
+  asked: "A question asked: “{question}”"
+admin:
+  question:
+    title: "Question"
+    section: "Section"
+    position: "Order"
+    featured: "Featured"
+    excerpt: "The visitor's details"
+    excerpt_help: "What the visitor added to the question; not shown."
+    content: "Answer"
+    asked_by: "Visitor's e-mail"
+  section:
+    position: "Order"
+  widget:
+    pending: "{count, plural, =0 {unanswered question} one {unanswered question} other {unanswered questions}}"
+    none: "Everything is answered."

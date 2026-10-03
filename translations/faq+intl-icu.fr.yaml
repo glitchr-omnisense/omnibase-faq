@@ -1,0 +1,43 @@
+index:
+  title: "Questions fréquentes"
+  eyebrow: "On me demande souvent"
+  lead: "Les questions que les collègues posent le plus, et leurs réponses. Il en manque une ? Demandez-la en bas de page."
+  search: "Chercher une question"
+  go: "Chercher"
+  results: "{count, plural, =0 {Aucune réponse pour « {term} »} one {# réponse pour « {term} »} other {# réponses pour « {term} »}}"
+  sections: "Rubriques"
+  other: "Autres questions"
+  empty: "Aucune question publiée pour l'instant."
+question:
+  link: "Lien vers cette réponse"
+  siblings: "Dans la même rubrique"
+ask:
+  title: "Il manque une question ?"
+  lead: "Posez-la ici : elle sera lue, et la réponse ajoutée à cette page."
+  form:
+    question: "Votre question"
+    details: "Des précisions (facultatif)"
+    email: "Votre e-mail (facultatif)"
+    email_help: "Pour vous prévenir quand la réponse est en ligne. Jamais affiché."
+    submit: "Envoyer la question"
+  error:
+    too_fast: "Un peu vite ! Relisez votre question et renvoyez-la."
+  flash:
+    received: "Merci ! Votre question est bien arrivée."
+notify:
+  asked: "Une question posée : « {question} »"
+admin:
+  question:
+    title: "Question"
+    section: "Rubrique"
+    position: "Ordre"
+    featured: "À la une"
+    excerpt: "Précisions du visiteur"
+    excerpt_help: "Ce que le visiteur a ajouté à sa question ; n'est pas affiché."
+    content: "Réponse"
+    asked_by: "E-mail du visiteur"
+  section:
+    position: "Ordre"
+  widget:
+    pending: "{count, plural, =0 {question sans réponse} one {question sans réponse} other {questions sans réponse}}"
+    none: "Tout est répondu."

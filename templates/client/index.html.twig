@@ -1,0 +1,65 @@
+{# The FAQ: a search, every section with its questions folded, the form to ask one. #}
+{% extends 'layout1.html.twig' %}
+
+{% block title %}{{ '@faq.index.title'|trans }}{% endblock %}
+{% block description %}{{ '@faq.index.lead'|trans }}{% endblock %}
+{% block stylesheets %}{{ parent() }}<link rel="stylesheet" href="{{ asset('bundles/faq/css/faq.css') }}">{% endblock %}
+
+{% block content %}
+<section class="faq">
+    <header class="faq-head">
+        <div><p class="faq-eyebrow">{{ '@faq.index.eyebrow'|trans }}</p><h1>{{ '@faq.index.title'|trans }}</h1><p class="faq-lead">{{ '@faq.index.lead'|trans }}</p></div>
+        <form class="faq-search" action="{{ path('faq_index') }}" method="get" role="search">
+            <input type="search" name="q" value="{{ term }}" minlength="3" placeholder="{{ '@faq.index.search'|trans }}" aria-label="{{ '@faq.index.search'|trans }}">
+            <button type="submit" aria-label="{{ '@faq.index.go'|trans }}"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+        </form>
+    </header>
+
+    {% if results is not null %}
+    <div class="faq-section">
+        <h2>{{ '@faq.index.results'|trans({count: results|length, term: term}) }}</h2>
+        {% include '@Faq/client/_questions.html.twig' with {questions: results, open: true} %}
+    </div>
+    {% endif %}
+
+    {% if sections|length > 1 %}
+    <nav class="faq-toc" aria-label="{{ '@faq.index.sections'|trans }}">
+        {% for section in sections %}<a href="#{{ section.slug }}">{% if section.icon %}<i class="{{ section.icon }}" aria-hidden="true"></i> {% endif %}{{ section.label }}</a>{% endfor %}
+    </nav>
+    {% endif %}
+
+    {% for section in sections %}
+    <div class="faq-section" id="{{ section.slug }}">
+        <h2>{% if section.icon %}<i class="{{ section.icon }}" aria-hidden="true"></i> {% endif %}{{ section.label }}</h2>
+        {% if section.description %}<p class="faq-section-lead">{{ section.description }}</p>{% endif %}
+        {% include '@Faq/client/_questions.html.twig' with {questions: section.publishedQuestions|slice(0, per_section)} %}
+        {% for child in section.children %}
+            {% set childQuestions = child.publishedQuestions %}
+            {% if childQuestions %}<h3>{{ child.label }}</h3>{% include '@Faq/client/_questions.html.twig' with {questions: childQuestions|slice(0, per_section)} %}{% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% if orphans %}
+    <div class="faq-section"><h2>{{ '@faq.index.other'|trans }}</h2>{% include '@Faq/client/_questions.html.twig' with {questions: orphans} %}</div>
+    {% endif %}
+    {% if not sections and not orphans %}<p class="faq-empty">{{ '@faq.index.empty'|trans }}</p>{% endif %}
+
+    {% if ask_form %}
+    <div class="faq-ask" id="demander">
+        <h2>{{ '@faq.ask.title'|trans }}</h2>
+        <p class="faq-lead">{{ '@faq.ask.lead'|trans }}</p>
+        {% for message in app.flashes('faq') %}<p class="faq-flash">{{ ('@faq.' ~ message)|trans }}</p>{% endfor %}
+        {{ form_start(ask_form, {attr: {class: 'faq-form', novalidate: 'novalidate'}}) }}
+            {{ form_errors(ask_form) }}
+            {{ form_row(ask_form.question) }}
+            {{ form_row(ask_form.details) }}
+            {{ form_row(ask_form.email) }}
+            {{ form_row(ask_form.url) }}
+            {{ form_row(ask_form.opened) }}
+            {% if ask_form.captcha is defined %}{{ form_row(ask_form.captcha) }}{% endif %}
+            <button type="submit" class="faq-button">{{ '@faq.ask.form.submit'|trans }}</button>
+        {{ form_end(ask_form) }}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

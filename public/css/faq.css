@@ -1,0 +1,37 @@
+/* omnibase/faq: sections and folded questions, on the host's --faq-* properties when set. */
+.faq { --_accent: var(--faq-accent, #b5411f); --_soft: var(--faq-soft, #6b6b6b); --_line: var(--faq-line, rgba(127,127,127,.25)); --_surface: var(--faq-surface, rgba(127,127,127,.06)); width: 100%; max-width: var(--faq-measure, 52rem); margin: 0 auto; padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3.5vw, 2.5rem) clamp(3rem, 6vw, 4.5rem); }
+.faq-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1.5rem; }
+.faq-head h1, .faq-one h1 { margin: 0 0 .4rem; font-size: clamp(1.9rem, 3.6vw, 2.8rem); letter-spacing: -.02em; }
+.faq-eyebrow { margin: 0 0 .5rem; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--_soft); }
+.faq-eyebrow a { color: inherit; text-decoration: none; }
+.faq-lead { max-width: 38rem; font-size: 1.05rem; color: var(--_soft); }
+/* The search field: on the cards' own surface, with their corners; the button never pushed out. */
+.faq-search { display: flex; max-width: 100%; border: 1px solid var(--_line); border-radius: .9rem; overflow: hidden; background: var(--_surface); }
+.faq-search input { flex: 1 1 14rem; min-width: 0; border: 0; padding: .5rem .9rem; font: inherit; background: transparent; color: inherit; }
+.faq-search button { flex: none; min-width: 2.8rem; border: 0; padding: 0 .9rem; background: var(--_accent); color: #fff; cursor: pointer; }
+.faq-toc { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.5rem; }
+.faq-toc a { padding: .25rem .7rem; border-radius: 2rem; border: 1px solid var(--_line); color: inherit; font-size: .85rem; text-decoration: none; }
+.faq-toc a:hover { border-color: var(--_accent); color: var(--_accent); }
+.faq-section { margin-bottom: 2rem; }
+.faq-section h2 { font-size: 1.35rem; margin: 0 0 .6rem; }
+.faq-section h3 { font-size: 1.05rem; margin: 1rem 0 .4rem; color: var(--_soft); }
+.faq-section-lead { color: var(--_soft); margin-top: 0; }
+.faq-questions { display: grid; gap: .5rem; }
+.faq-question { border: 1px solid var(--_line); border-radius: .75rem; background: var(--_surface); }
+.faq-question summary { padding: .8rem 1rem; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+.faq-question summary::-webkit-details-marker { display: none; }
+.faq-question summary::after { content: "+"; color: var(--_accent); font-weight: 700; }
+.faq-question[open] summary::after { content: "−"; }
+.faq-answer { padding: 0 1rem 1rem; line-height: 1.65; }
+.faq-answer-foot { margin: .6rem 0 0; font-size: .8rem; }
+.faq-answer-foot a { color: var(--_soft); text-decoration: none; }
+.faq-prose { padding: 0; font-size: 1.05rem; }
+.faq-empty { color: var(--_soft); }
+.faq-ask { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--_line); }
+.faq-ask h2 { font-size: 1.35rem; }
+.faq-flash { padding: .7rem 1rem; border-radius: .6rem; background: var(--_surface); border-left: 4px solid var(--_accent); }
+.faq-form input, .faq-form textarea { width: 100%; }
+.faq-form .form-group, .faq-form .mb-3 { margin-bottom: .9rem; }
+.faq-trap { position: absolute !important; left: -100vw; width: 1px; height: 1px; overflow: hidden; }
+.faq-button { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.6rem; padding: 0 1.15rem; border: 1px solid var(--_accent); border-radius: 2rem; background: var(--_accent); color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+@media (max-width: 700px) { .faq-head { flex-direction: column; align-items: stretch; } }

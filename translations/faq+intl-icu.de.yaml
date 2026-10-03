@@ -1,0 +1,43 @@
+index:
+  title: "Häufige Fragen"
+  eyebrow: "Oft gefragt"
+  lead: "Die Fragen, die Kolleginnen am häufigsten stellen, und ihre Antworten. Fehlt eine? Stellen Sie sie unten auf der Seite."
+  search: "Eine Frage suchen"
+  go: "Suchen"
+  results: "{count, plural, =0 {Keine Antwort für „{term}“} one {# Antwort für „{term}“} other {# Antworten für „{term}“}}"
+  sections: "Rubriken"
+  other: "Weitere Fragen"
+  empty: "Noch keine Frage veröffentlicht."
+question:
+  link: "Link zu dieser Antwort"
+  siblings: "In derselben Rubrik"
+ask:
+  title: "Fehlt eine Frage?"
+  lead: "Stellen Sie sie hier: sie wird gelesen, und die Antwort dieser Seite hinzugefügt."
+  form:
+    question: "Ihre Frage"
+    details: "Einzelheiten (optional)"
+    email: "Ihre E-Mail (optional)"
+    email_help: "Um Sie zu benachrichtigen, sobald die Antwort online ist. Wird nie angezeigt."
+    submit: "Frage senden"
+  error:
+    too_fast: "Etwas schnell! Lesen Sie Ihre Frage noch einmal und senden Sie sie erneut."
+  flash:
+    received: "Danke! Ihre Frage ist angekommen."
+notify:
+  asked: "Eine Frage gestellt: „{question}“"
+admin:
+  question:
+    title: "Frage"
+    section: "Rubrik"
+    position: "Reihenfolge"
+    featured: "Hervorgehoben"
+    excerpt: "Einzelheiten des Besuchers"
+    excerpt_help: "Was der Besucher seiner Frage hinzugefügt hat; wird nicht angezeigt."
+    content: "Antwort"
+    asked_by: "E-Mail des Besuchers"
+  section:
+    position: "Reihenfolge"
+  widget:
+    pending: "{count, plural, =0 {unbeantwortete Frage} one {unbeantwortete Frage} other {unbeantwortete Fragen}}"
+    none: "Alles beantwortet."

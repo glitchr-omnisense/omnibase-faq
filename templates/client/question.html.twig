@@ -1,0 +1,17 @@
+{# One question at its own address, and the others of its section. #}
+{% extends 'layout1.html.twig' %}
+
+{% block title %}{{ question.title }}{% endblock %}
+{% block description %}{{ question.excerpt ?? '' }}{% endblock %}
+{% block stylesheets %}{{ parent() }}<link rel="stylesheet" href="{{ asset('bundles/faq/css/faq.css') }}">{% endblock %}
+
+{% block content %}
+<section class="faq faq-one">
+    <p class="faq-eyebrow"><a href="{{ path('faq_index') }}">{{ '@faq.index.title'|trans }}</a>{% if question.section %} › <a href="{{ path('faq_index') }}#{{ question.section.slug }}">{{ question.section.label }}</a>{% endif %}</p>
+    <h1>{{ question.title }}</h1>
+    <div class="faq-answer faq-prose">{{ question.content|wysiwyg|raw }}</div>
+    {% if siblings %}
+    <div class="faq-section"><h2>{{ '@faq.question.siblings'|trans }}</h2>{% include '@Faq/client/_questions.html.twig' with {questions: siblings} %}</div>
+    {% endif %}
+</section>
+{% endblock %}
