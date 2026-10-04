@@ -42,6 +42,22 @@ faq:
 Then `bin/console doctrine:migrations:diff && bin/console doctrine:migrations:migrate`
 and `bin/console assets:install` (`public/css/faq.css`).
 
+## JSON-LD
+
+`/faq` carries schema.org's `FAQPage` with every published question and its
+answer, and a question's own page the same for that question
+(`Service\JsonLd::page()`, in a `<script type="application/ld+json">`). An
+answer is kept to what search engines read in one - paragraphs, lists, links,
+emphasis -, an EditorJS answer is turned into paragraphs and lists, and a
+question without an answer is left out.
+
+## Tests
+
+```bash
+vendor/bin/phpunit                                                  # checked out on its own
+php vendor/bin/phpunit -c vendor/omnibase/faq/phpunit.xml.dist      # from an application that requires it
+```
+
 ## What the host provides
 
 The templates extend `layout1.html.twig` (`title`, `description`, `content`,

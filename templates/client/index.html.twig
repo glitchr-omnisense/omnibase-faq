@@ -61,5 +61,6 @@
         {{ form_end(ask_form) }}
     </div>
     {% endif %}
+    {% if jsonld|default(null) %}<script type="application/ld+json">{{ jsonld|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>{% endif %}
 </section>
 {% endblock %}

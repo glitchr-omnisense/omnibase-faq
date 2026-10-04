@@ -13,5 +13,6 @@
     {% if siblings %}
     <div class="faq-section"><h2>{{ '@faq.question.siblings'|trans }}</h2>{% include '@Faq/client/_questions.html.twig' with {questions: siblings} %}</div>
     {% endif %}
+    {% if jsonld|default(null) %}<script type="application/ld+json">{{ jsonld|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_HEX_TAG'))|raw }}</script>{% endif %}
 </section>
 {% endblock %}

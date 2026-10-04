@@ -8,6 +8,7 @@ use Base\Faq\Entity\Question;
 use Base\Faq\Form\AskType;
 use Base\Faq\Repository\QuestionRepository;
 use Base\Faq\Service\AskNotifier;
+use Base\Faq\Service\JsonLd;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -15,11 +16,13 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * The FAQ: every section with its questions folded (<details>), a search,
  * one question at its own address, and the form to ask another - which
- * lands as a draft in the back office once Akismet has read it.
+ * lands as a draft in the back office once Akismet has read it. Both pages
+ * carry schema.org's FAQPage (Service\JsonLd).
  */
 class FaqController extends AbstractController
 {
@@ -32,6 +35,7 @@ class FaqController extends AbstractController
         #[Autowire('%faq.min_delay%')] private readonly int $minDelay = 4,
         // glitchr/ux-google, when installed: reCAPTCHA v3 on the form once google.recaptcha.enable is on.
         private readonly ?\Google\Service\GrService $recaptcha = null,
+        private readonly ?JsonLd $jsonLd = null,
     ) {
     }
 
@@ -59,6 +63,8 @@ class FaqController extends AbstractController
             'term' => $term,
             'per_section' => $this->perSection,
             'ask_form' => $form?->createView(),
+            // schema.org's FAQPage: every published question with its answer, whatever the search shows.
+            'jsonld' => $this->jsonLd?->page($this->questions->findPublished(), $this->generateUrl('faq_index', [], UrlGeneratorInterface::ABSOLUTE_URL)),
         ], new Response(null, $form && $form->isSubmitted() && !$form->isValid() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK));
     }
 
@@ -70,6 +76,7 @@ class FaqController extends AbstractController
         return $this->render('@Faq/client/question.html.twig', [
             'question' => $question,
             'siblings' => array_values(array_filter($question->getSection()?->getPublishedQuestions() ?? [], fn (Question $q) => $q !== $question)),
+            'jsonld' => $this->jsonLd?->page([$question], $this->generateUrl('faq_question', ['slug' => $question->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)),
         ]);
     }
 
