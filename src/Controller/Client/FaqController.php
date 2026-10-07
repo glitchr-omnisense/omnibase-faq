@@ -12,7 +12,6 @@ use Base\Faq\Service\JsonLd;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -89,24 +88,28 @@ class FaqController extends AbstractController
             $ask->email = $user->getEmail();
         }
 
-        return $this->createForm(AskType::class, $ask, ['action' => $this->generateUrl('faq_index').'#demander', 'recaptcha' => (bool) $this->recaptcha?->isEnabled()]);
+        $recaptcha = (bool) $this->recaptcha?->isEnabled();
+
+        return $this->createForm(AskType::class, $ask, [
+            'action' => $this->generateUrl('faq_index').'#demander',
+            'recaptcha' => $recaptcha,
+            // glitchr/omnibase's forms' guard: the bundle's delay (faq.min_delay), and no second captcha
+            // where ux-google's reCAPTCHA is on.
+            'guard' => ['action' => 'ask', 'min_delay' => $this->minDelay, 'challenge' => !$recaptcha],
+        ]);
     }
 
     /** The draft Question written, the administrators told, the visitor thanked; null when the form has errors. */
     private function handleAsk(\Symfony\Component\Form\FormInterface $form, Request $request): ?Response
     {
-        // A robot in the trap, or a doubtful text: thanked, and nothing kept.
-        $trapped = '' !== trim((string) $form->get('url')->getData());
-        $opened = (int) $form->get('opened')->getData();
-        if ($this->minDelay > 0 && ($opened <= 0 || time() - $opened < $this->minDelay)) {
-            $form->addError(new FormError('too_fast', '@faq.ask.error.too_fast'));
-        }
+        // A robot is refused by the form's guard (a trap, the time, the lists, the captcha); a doubtful
+        // text (Akismet) is thanked, and nothing kept.
         if (!$form->isValid()) {
             return null;
         }
         /** @var Ask $ask */
         $ask = $form->getData();
-        if (!$trapped && !$ask->isDoubtful()) {
+        if (!$ask->isDoubtful()) {
             $question = new Question($ask->author);
             $question->setTitle(mb_strimwidth(trim((string) $ask->question), 0, 255, '…'));
             $question->setExcerpt($ask->details ? trim($ask->details) : null);

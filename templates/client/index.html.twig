@@ -54,9 +54,9 @@
             {{ form_row(ask_form.question) }}
             {{ form_row(ask_form.details) }}
             {{ form_row(ask_form.email) }}
-            {{ form_row(ask_form.url) }}
-            {{ form_row(ask_form.opened) }}
             {% if ask_form.captcha is defined %}{{ form_row(ask_form.captcha) }}{% endif %}
+            {#- The forms' guard (glitchr/omnibase): its trap, its stamp, its captcha, before the button. -#}
+            {{ form_rest(ask_form) }}
             <button type="submit" class="faq-button">{{ '@faq.ask.form.submit'|trans }}</button>
         {{ form_end(ask_form) }}
     </div>

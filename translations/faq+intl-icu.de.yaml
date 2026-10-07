@@ -20,8 +20,6 @@ ask:
     email: "Ihre E-Mail (optional)"
     email_help: "Um Sie zu benachrichtigen, sobald die Antwort online ist. Wird nie angezeigt."
     submit: "Frage senden"
-  error:
-    too_fast: "Etwas schnell! Lesen Sie Ihre Frage noch einmal und senden Sie sie erneut."
   flash:
     received: "Danke! Ihre Frage ist angekommen."
 notify:
