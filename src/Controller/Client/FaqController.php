@@ -12,6 +12,7 @@ use Base\Faq\Service\JsonLd;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -103,13 +104,22 @@ class FaqController extends AbstractController
     private function handleAsk(\Symfony\Component\Form\FormInterface $form, Request $request): ?Response
     {
         // A robot is refused by the form's guard (a trap, the time, the lists, the captcha); a doubtful
-        // text (Akismet) is thanked, and nothing kept.
+        // text (Akismet) is thanked, and nothing kept. With a glitchr/omnibase from before the guard, the
+        // form's own trap (thanked, nothing kept) and time (AskType).
+        $trapped = false;
+        if ($form->has('url')) {
+            $trapped = '' !== trim((string) $form->get('url')->getData());
+            $opened = (int) $form->get('opened')->getData();
+            if ($this->minDelay > 0 && ($opened <= 0 || time() - $opened < $this->minDelay)) {
+                $form->addError(new FormError('too_fast', '@faq.ask.error.too_fast'));
+            }
+        }
         if (!$form->isValid()) {
             return null;
         }
         /** @var Ask $ask */
         $ask = $form->getData();
-        if (!$ask->isDoubtful()) {
+        if (!$trapped && !$ask->isDoubtful()) {
             $question = new Question($ask->author);
             $question->setTitle(mb_strimwidth(trim((string) $ask->question), 0, 255, '…'));
             $question->setExcerpt($ask->details ? trim($ask->details) : null);
