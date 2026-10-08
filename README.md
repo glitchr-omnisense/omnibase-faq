@@ -74,3 +74,7 @@ draws them as `<details>`.
 
 The back office gets `Question` and `Section` CRUDs and the dashboard widget
 `faq_pending_questions` (the drafts waiting for an answer).
+
+## License
+
+MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
