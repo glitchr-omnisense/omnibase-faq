@@ -45,7 +45,7 @@ and `bin/console assets:install` (`public/css/faq.css`).
 The form to ask a question is guarded as glitchr/omnibase guards a form - its
 option `guard` (`action: ask`; glitchr/omnibase's `docs/20-architecture/guard.md`):
 a trap, the time it takes (`min_delay`), the lists of `base.guard.reputation`,
-the captcha when the site has glitchr/omniguard (none where ux-google's
+the captcha when the site has glitchr/omnishield (none where ux-google's
 reCAPTCHA is on). A robot is refused on the form; a text Akismet doubts is
 thanked and not kept.
 

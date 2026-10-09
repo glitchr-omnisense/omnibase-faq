@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
  * The form to ask a question is guarded as glitchr/omnibase guards a form (option `guard`, action
  * "ask"), in place of its own `url` trap and `opened` time: a filled trap, a question sent faster than
  * its delay and a missing captcha token are refused on the form; a question asked as a person asks it
- * goes through. Without a captcha (no glitchr/omniguard, or ux-google's reCAPTCHA in its place:
+ * goes through. Without a captcha (no glitchr/omnishield, or ux-google's reCAPTCHA in its place:
  * `challenge: false`), the trap and the time alone. Run by a host application's PHPUnit, its test
- * environment's captcha being omniguard's "fixed" gateway (token omniguard-fixed-token).
+ * environment's captcha being omnishield's "fixed" gateway (token omnishield-fixed-token).
  */
 final class AskGuardTest extends KernelTestCase
 {
@@ -54,7 +54,7 @@ final class AskGuardTest extends KernelTestCase
             'guard_opened' => static::getContainer()->get(FormGuard::class)->stamp(time() - 10),
         ];
         if ($form->has('guard_captcha')) {
-            $data['guard_captcha'] = 'omniguard-fixed-token';
+            $data['guard_captcha'] = (class_exists(\Omnishield\Testing\FixedGateway::class) ? \Omnishield\Testing\FixedGateway::TOKEN : 'omniguard-fixed-token'); // omnishield's "fixed" test gateway, or omniguard's on a host not moved to omnishield yet.
         }
         $form->submit(array_filter($overrides + $data, static fn ($value) => null !== $value));
 
@@ -106,7 +106,7 @@ final class AskGuardTest extends KernelTestCase
     {
         $form = $this->form();
         if (!$form->has('guard_captcha')) {
-            self::markTestSkipped('The host application has no captcha (glitchr/omniguard).');
+            self::markTestSkipped('The host application has no captcha (glitchr/omnishield).');
         }
         $this->send($form, ['guard_captcha' => '']);
         self::assertFalse($form->isValid());
