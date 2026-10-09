@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * "Il manque une question ?": the question, a few details, an e-mail to be
  * told once it is answered. Guarded as glitchr/omnibase guards a form (its
  * option `guard`, action "ask"): a trap, the time it takes, the lists, the
- * captcha when the site has glitchr/omniguard; Akismet reads what is written
+ * captcha when the site has glitchr/omnishield; Akismet reads what is written
  * (the data_class implements SpamProtectionInterface); reCAPTCHA v3 in place
  * of the guard's captcha when the host turned it on (glitchr/ux-google).
  */
