@@ -53,13 +53,13 @@ class QuestionCrudController extends AbstractCrudController
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('title', '@faq.admin.question.title')->setColumns(8);
         yield StateField::new('state')->setColumns(4);
-        yield SlugField::new('slug')->setColumns(4)->hideOnIndex();
+        yield SlugField::new('slug')->setTargetFieldName('title')->setColumns(4)->hideOnIndex();
         yield SelectField::new('section', '@faq.admin.question.section')->setClass(Section::class)->setRequired(false)->setColumns(4);
         yield IntegerField::new('position', '@faq.admin.question.position')->setColumns(2);
         yield BooleanField::new('featured', '@faq.admin.question.featured')->setColumns(2);
-        yield TextareaField::new('excerpt', '@faq.admin.question.excerpt')->hideOnIndex()->setHelp('@faq.admin.question.excerpt_help');
+        yield TextareaField::new('excerpt', '@faq.admin.question.excerpt')->setRequired(false)->hideOnIndex()->setHelp('@faq.admin.question.excerpt_help');
         yield EditorField::new('content', '@faq.admin.question.content')->hideOnIndex()->setFormTypeOption('collab_autosave', true)->setFormTypeOption('collab_live', true);
-        yield TextField::new('askedBy', '@faq.admin.question.asked_by')->setColumns(6)->hideOnIndex();
+        yield TextField::new('askedBy', '@faq.admin.question.asked_by')->setRequired(false)->setColumns(6)->hideOnIndex();
     }
 
     public function createEntity(string $entityFqcn): object
