@@ -108,6 +108,13 @@ final class AskGuardTest extends KernelTestCase
         if (!$form->has('guard_captcha')) {
             self::markTestSkipped('The host application has no captcha (glitchr/omnishield).');
         }
+        // Asked from the first question only where the host says so (base.guard.captcha_after: 0); by default
+        // after three refused tries (the omnibase harness), and a first question is then not asked it.
+        $guard = static::getContainer()->get(FormGuard::class);
+        $request = static::getContainer()->get('request_stack')->getCurrentRequest();
+        if (!$guard->captchaAsked($form->getName(), (int) ($form->getConfig()->getAttribute('guard_captcha_after') ?? $guard->captchaAfter()), $request)) {
+            self::markTestSkipped('The host asks the captcha after refused tries only (base.guard.captcha_after).');
+        }
         $this->send($form, ['guard_captcha' => '']);
         self::assertFalse($form->isValid());
         self::assertGreaterThan(0, $form->get('guard_captcha')->getErrors()->count(), 'refused on the captcha');
