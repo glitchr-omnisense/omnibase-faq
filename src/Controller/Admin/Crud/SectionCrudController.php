@@ -2,7 +2,7 @@
 
 namespace Base\Faq\Controller\Admin\Crud;
 
-use Base\Controller\Backoffice\Crud\Thread\TaxonCrudController;
+use Base\Admin\Controller\Crud\Thread\TaxonCrudController;
 use Base\Faq\Entity\Section;
 use Base\Field\IntegerField;
 use Base\Admin\Config\Actions;
