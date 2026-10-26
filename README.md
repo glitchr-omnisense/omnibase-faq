@@ -1,7 +1,7 @@
 # FAQ
 
 The questions a site's visitors ask most, by section, for
-[omnibase](https://github.com/glitchr-studio/omnibase) sites: a teacher's
+[omnibase](https://github.com/glitchr-omnisense/omnibase) sites: a teacher's
 ("May I use your cards in my class?"), a game's, a shop's.
 
 A `Question` **is** an omnibase `Thread` (a JOINED subclass): the question is
@@ -36,14 +36,14 @@ faq_controller:
 faq:
     ask_enabled: true      # the form to ask a question
     per_section: 20        # questions shown per section
-    min_delay: 4           # seconds a human needs to fill the form (omniscient/omnibase's forms' guard)
+    min_delay: 4           # seconds a human needs to fill the form (omnisense/omnibase's forms' guard)
 ```
 
 Then `bin/console doctrine:migrations:diff && bin/console doctrine:migrations:migrate`
 and `bin/console assets:install` (`public/css/faq.css`).
 
-The form to ask a question is guarded as omniscient/omnibase guards a form - its
-option `guard` (`action: ask`; omniscient/omnibase's `docs/20-architecture/guard.md`):
+The form to ask a question is guarded as omnisense/omnibase guards a form - its
+option `guard` (`action: ask`; omnisense/omnibase's `docs/20-architecture/guard.md`):
 a trap, the time it takes (`min_delay`), the lists of `base.guard.reputation`,
 the captcha when the site has glitchr/omnishield (none where ux-google's
 reCAPTCHA is on). A robot is refused on the form; a text Akismet doubts is
