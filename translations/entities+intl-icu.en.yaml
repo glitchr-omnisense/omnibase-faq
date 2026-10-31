@@ -1,0 +1,9 @@
+# The names of omnibase/faq's entities, which omnibase/admin titles its screens with
+# (en of /admin/questions, /admin/sections).
+faq:
+  question:
+    _singular: "question"
+    _plural: "questions"
+  section:
+    _singular: "section"
+    _plural: "sections"
