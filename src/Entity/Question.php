@@ -2,6 +2,7 @@
 
 namespace Base\Faq\Entity;
 
+use Base\Contract\Link;
 use Base\Database\Attribute\DiscriminatorEntry;
 use Base\Entity\Thread;
 use Base\Enum\ThreadState;
@@ -28,7 +29,7 @@ class Question extends Thread implements LinkableInterface
 
     public function __toLink(array $routeParameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): ?string
     {
-        return $this->getRouter()->generate('faq_question', array_merge($routeParameters, ['slug' => $this->getSlug()]), $referenceType);
+        return Link::to('faq_question', array_merge($routeParameters, ['slug' => $this->getSlug()]), $referenceType);
     }
 
     /** Where it comes in its section: lower first. */
