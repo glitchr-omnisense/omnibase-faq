@@ -94,7 +94,7 @@ class FaqController extends AbstractController
         return $this->createForm(AskType::class, $ask, [
             'action' => $this->generateUrl('faq_index').'#demander',
             'recaptcha' => $recaptcha,
-            // glitchr/omnibase's forms' guard: the bundle's delay (faq.min_delay), and no second captcha
+            // omnisense/omnibase's forms' guard: the bundle's delay (faq.min_delay), and no second captcha
             // where ux-google's reCAPTCHA is on.
             'guard' => ['action' => 'ask', 'min_delay' => $this->minDelay, 'challenge' => !$recaptcha],
         ]);
@@ -104,7 +104,7 @@ class FaqController extends AbstractController
     private function handleAsk(\Symfony\Component\Form\FormInterface $form, Request $request): ?Response
     {
         // A robot is refused by the form's guard (a trap, the time, the lists, the captcha); a doubtful
-        // text (Akismet) is thanked, and nothing kept. With a glitchr/omnibase from before the guard, the
+        // text (Akismet) is thanked, and nothing kept. With an omnisense/omnibase from before the guard, the
         // form's own trap (thanked, nothing kept) and time (AskType).
         $trapped = false;
         if ($form->has('url')) {

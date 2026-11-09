@@ -14,9 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * "Il manque une question ?": the question, a few details, an e-mail to be
- * told once it is answered. Guarded as glitchr/omnibase guards a form (its
+ * told once it is answered. Guarded as omnisense/omnibase guards a form (its
  * option `guard`, action "ask"): a trap, the time it takes, the lists, the
- * captcha when the site has glitchr/omnishield; Akismet reads what is written
+ * captcha when the site has omnisense/omnishield; Akismet reads what is written
  * (the data_class implements SpamProtectionInterface); reCAPTCHA v3 in place
  * of the guard's captcha when the host turned it on (glitchr/ux-google).
  */
@@ -30,7 +30,7 @@ final class AskType extends AbstractType
             ->add('email', EmailType::class, ['label' => '@faq.ask.form.email', 'help' => '@faq.ask.form.email_help', 'required' => false, 'attr' => ['autocomplete' => 'email', 'maxlength' => 180]]);
 
         if (!class_exists(FormGuard::class)) {
-            // A glitchr/omnibase from before the forms' guard: the form's own trap and time, read by the
+            // An omnisense/omnibase from before the forms' guard: the form's own trap and time, read by the
             // controller, until the host takes a core that has it.
             $builder
                 ->add('url', TextType::class, ['mapped' => false, 'required' => false, 'label' => false, 'row_attr' => ['class' => 'faq-trap', 'aria-hidden' => 'true'], 'attr' => ['tabindex' => '-1', 'autocomplete' => 'off']])
