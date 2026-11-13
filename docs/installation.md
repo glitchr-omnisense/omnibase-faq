@@ -8,7 +8,7 @@ order: 10
 ## Requirements
 
 What `composer.json` requires: PHP 8.2 or later, `doctrine/orm` 2.15 or 3,
-`omnisense/omnibase` 3.0, 4.0 or 5.0, `omnibridge/symfony` 1.x, `omnibase/admin`, and
+`omnisense/omnibase` 5.1 or later (5.x), `omnibridge/symfony` 1.1 or later, `omnibase/admin`, and
 `symfony/config`, `dependency-injection`, `form`, `http-kernel` and `security-bundle` 6, 7
 or 8.
 
@@ -21,7 +21,7 @@ filter that renders an answer, the `#[Sitemap]` attribute, the notifications
 ## The bundle
 
 ```bash
-composer require omnibase/faq:dev-main
+composer require omnibase/faq
 ```
 
 ```php

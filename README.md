@@ -15,7 +15,7 @@ Question - in the back office, where it is answered and published.
 ## Install
 
 ```bash
-composer require omnibase/faq:dev-main
+composer require omnibase/faq
 ```
 
 ```php
