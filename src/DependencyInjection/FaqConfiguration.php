@@ -2,7 +2,7 @@
 
 namespace Base\Faq\DependencyInjection;
 
-use Base\Bundle\AbstractBaseConfiguration;
+use Omnibridge\Symfony\Omnibase\Bundle\AbstractBaseConfiguration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 class FaqConfiguration extends AbstractBaseConfiguration

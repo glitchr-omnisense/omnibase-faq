@@ -2,8 +2,8 @@
 
 namespace Base\Faq;
 
-use Base\Bundle\AbstractBaseBundle;
 use Base\Traits\SingletonTrait;
+use Omnibridge\Symfony\Omnibase\Bundle\AbstractBaseBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /** A FAQ on top of omnibase's Thread (the questions) and Taxon (the sections). */
