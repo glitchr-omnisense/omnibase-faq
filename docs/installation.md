@@ -28,7 +28,7 @@ composer require omnibase/faq
 // config/bundles.php
 return [
     // ...
-    Omnibridge\Symfony\Omnibase\BaseBundle::class => ['all' => true],
+    Base\BaseBundle::class => ['all' => true],
     Base\Admin\AdminBundle::class => ['all' => true],
     Base\Faq\FaqBundle::class => ['all' => true],
 ];

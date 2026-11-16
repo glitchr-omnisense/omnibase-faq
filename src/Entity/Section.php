@@ -4,7 +4,7 @@ namespace Base\Faq\Entity;
 
 use Base\Database\Attribute\DiscriminatorEntry;
 use Base\Entity\Thread\Taxon;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * A section of the FAQ ("Utiliser mes ressources", "La boutique"): an

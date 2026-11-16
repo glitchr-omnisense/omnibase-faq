@@ -9,7 +9,7 @@ use Base\Faq\Form\AskType;
 use Base\Faq\Repository\QuestionRepository;
 use Base\Faq\Service\AskNotifier;
 use Base\Faq\Service\JsonLd;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\FormError;
@@ -28,7 +28,7 @@ class FaqController extends AbstractController
 {
     public function __construct(
         private readonly QuestionRepository $questions,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
         private readonly AskNotifier $notifier,
         #[Autowire('%faq.ask_enabled%')] private readonly bool $askEnabled = true,
         #[Autowire('%faq.per_section%')] private readonly int $perSection = 20,
@@ -125,8 +125,8 @@ class FaqController extends AbstractController
             $question->setExcerpt($ask->details ? trim($ask->details) : null);
             $question->setAskedBy($ask->email);
             $question->setState(\Base\Enum\ThreadState::DRAFT);
-            $this->entityManager->persist($question);
-            $this->entityManager->flush();
+            $this->unitOfWork->persist($question);
+            $this->unitOfWork->flush();
             $this->notifier->questionAsked($question);
         }
         $this->addFlash('faq', 'ask.flash.received');

@@ -2,63 +2,84 @@
 
 namespace Base\Faq\Repository;
 
+use Base\Database\Repository\Finder\Key;
+use Base\Database\Repository\Repositories;
 use Base\Enum\ThreadState;
 use Base\Faq\Entity\Question;
 use Base\Faq\Entity\Section;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
+use Base\Repository\ThreadTranslations;
+use Base\Database\Repository\Finders;
+use Base\Database\Repository\ServiceEntityRepository;
 
-/** @extends ServiceEntityRepository<Question> */
+/**
+ * The questions, on omnibase's finder language: the same queries whatever persistence runs them.
+ *
+ * @method Question|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Question|null findOneBy(array $criteria, ?array $orderBy = null)
+ * @method Question[]    findAll()
+ * @method Question[]    findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+ */
 class QuestionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Question::class);
+    public function __construct(
+        Finders $finders,
+        private readonly Repositories $repositories,
+        private readonly ThreadTranslations $translations,
+    ) {
+        parent::__construct($finders, Question::class);
     }
 
     /** @return list<Question> the published ones, of one section when given, in order */
     public function findPublished(?Section $section = null, ?int $limit = null): array
     {
-        $query = $this->published()->orderBy('q.position', 'ASC')->addOrderBy('q.id', 'ASC');
+        $criteria = $this->published();
         if ($section) {
-            $query->innerJoin('q.taxa', 's')->andWhere('s = :section')->setParameter('section', $section);
-        }
-        if ($limit) {
-            $query->setMaxResults($limit);
+            // The section among the question's taxa: a join of them, on that one.
+            $criteria['taxa'] = $section;
         }
 
-        return $query->getQuery()->getResult();
+        return $this->findBy($criteria, ['position' => 'ASC', 'id' => 'ASC'], $limit ?: null);
     }
 
     /** @return list<Question> the featured ones first, then the most helpful */
     public function findFeatured(int $limit = 4): array
     {
-        return $this->published()
-            ->orderBy('q.featured', 'DESC')->addOrderBy('q.position', 'ASC')->addOrderBy('q.id', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery()->getResult();
+        return $this->findBy($this->published(), ['featured' => 'DESC', 'position' => 'ASC', 'id' => 'ASC'], $limit);
     }
 
     public function findOnePublished(string $slug): ?Question
     {
-        return $this->published()->andWhere('q.slug = :slug')->setParameter('slug', $slug)->getQuery()->getOneOrNullResult();
+        return $this->findOneBy([...$this->published(), 'slug' => $slug]);
     }
 
-    /** A plain search in the questions and answers. @return list<Question> */
+    /**
+     * A plain search in the questions and answers: the translations whose title or content holds the term (the
+     * core's ThreadTranslations::search(), lower-cased LIKE), then the published questions among their threads.
+     * Each question once (the join on the translations could give one twice).
+     *
+     * @return list<Question>
+     */
     public function search(string $term, int $limit = 20): array
     {
-        return $this->published()
-            ->innerJoin('q.translations', 'tr')
-            ->andWhere('tr.title LIKE :term OR tr.content LIKE :term')->setParameter('term', '%'.$term.'%')
-            ->setMaxResults($limit)
-            ->getQuery()->getResult();
+        $ids = [];
+        foreach ($this->translations->search(['title' => $term, 'content' => $term]) as $translation) {
+            $thread = $translation->getTranslatable();
+            if ($thread instanceof Question && null !== $thread->getId()) {
+                $ids[$thread->getId()] = $thread->getId();
+            }
+        }
+        if (!$ids) {
+            return [];
+        }
+
+        return $this->findBy([...$this->published(), 'id' => array_values($ids)], null, $limit);
     }
 
     /** @return list<Section> the sections that have a published question, in order */
     public function findSections(): array
     {
-        $sections = $this->getEntityManager()->getRepository(Section::class)->findBy(['parent' => null], ['position' => 'ASC', 'id' => 'ASC']);
+        // The top level: no parent, its key compared (`parent IS NULL`).
+        $sections = $this->repositories->of(Section::class)->findBy(['parent' => Key::of(null)], ['position' => 'ASC', 'id' => 'ASC']);
 
         return array_values(array_filter($sections, fn (Section $section) => \count($section->getPublishedQuestions()) > 0 || $section->getChildren()->count() > 0));
     }
@@ -74,9 +95,9 @@ class QuestionRepository extends ServiceEntityRepository
         return $this->findBy(['state' => ThreadState::DRAFT], ['createdAt' => 'ASC'], $limit);
     }
 
-    private function published(): QueryBuilder
+    /** @return array<string, mixed> the published ones */
+    private function published(): array
     {
-        return $this->createQueryBuilder('q')
-            ->andWhere('q.state = :published')->setParameter('published', ThreadState::PUBLISH);
+        return ['state' => ThreadState::PUBLISH];
     }
 }

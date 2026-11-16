@@ -3,7 +3,7 @@
 namespace Base\Faq;
 
 use Base\Traits\SingletonTrait;
-use Omnibridge\Symfony\Omnibase\Bundle\AbstractBaseBundle;
+use Base\Bundle\AbstractBaseBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /** A FAQ on top of omnibase's Thread (the questions) and Taxon (the sections). */
